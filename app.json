@@ -1,0 +1,89 @@
+{
+  "expo": {
+    "name": "tms-chat",
+    "slug": "tms-chat",
+    "scheme": "tms-chat",
+    "privacy": "unlisted",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/default/icon.png",
+    "userInterfaceStyle": "light",
+    "platforms": ["ios", "android"],
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/default/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "entitlements": {
+        "aps-environment": "development"
+      },
+      "supportsTablet": false,
+      "bundleIdentifier": "com.procuro.tmschat",
+      "buildNumber": "20250421"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/default/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.procuro.tmschat",
+      "versionCode": "20250421"
+    },
+    "web": {
+      "favicon": "./assets/default/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "newArchEnabled": true,
+            "deploymentTarget": "16.0"
+          },
+          "android": {
+            "newArchEnabled": true
+          }
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends.",
+          "cameraPermission": "Allow $(PRODUCT_NAME) to open the camera.",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to open the camera.",
+          "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ],
+      "expo-router",
+      "expo-font",
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
+        }
+      ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "9f37f58f-4d7f-4738-8f1c-4fb3538f867e"
+      }
+    }
+  }
+}

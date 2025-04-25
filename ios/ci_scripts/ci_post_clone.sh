@@ -1,23 +1,17 @@
 #!/bin/sh
- 
-# Install Node.js using Homebrew
-brew install node
- 
-# Install CocoaPods using Homebrew
-brew install cocoapods
- 
-# Navigate to the project root directory
-cd ..
- 
-# Install Node.js dependencies
-npm install
- 
-# Navigate back to the ios directory
-cd ios
- 
-# Install dependencies you manage with CocoaPods
-pod install
+set -e
+echo "Running ci_post_clone.sh"
 
+# cd out of ios/ci_scripts into main project directory
+cd ../../
+
+# install node and cocoapods
+brew install node cocoapods
+
+# install node modules
+npm install
+
+# See note above about patching for GetEnv Issue
 npm i patch-package
 npx patch-package
 

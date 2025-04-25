@@ -17,10 +17,6 @@ cd ios
 # Install dependencies you manage with CocoaPods
 pod install
 
-# See note above about patching for GetEnv Issue
-npm i patch-package
-npx patch-package
-
 # xcode cloud sets `CI` env var to 'TRUE':
 # This causes a crash: Error: GetEnv.NoBoolean: TRUE is not a boolean.
 # This is a workaround for that issue.

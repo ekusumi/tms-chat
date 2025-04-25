@@ -11,17 +11,17 @@ cd ..
 # Install Node.js dependencies
 npm install
  
-# # Navigate back to the ios directory
-# cd ios
+npm install @expo/cli
+
+# Navigate back to the ios directory
+cd ios
  
 # # Install dependencies you manage with CocoaPods
-# pod install
+pod install
 
-npm install @expo/cli
-npx expo prebuild 
-cd ios
-npx pod-install
-# cd ..
+npm i patch-package
+
+npx patch-package
 
 # xcode cloud sets `CI` env var to 'TRUE':
 # This causes a crash: Error: GetEnv.NoBoolean: TRUE is not a boolean.

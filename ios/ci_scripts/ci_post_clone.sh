@@ -6,7 +6,13 @@ echo "Running ci_post_clone.sh"
 cd ../../
 
 # install node and cocoapods
-brew install node cocoapods
+brew install node
+
+brew uninstall --cask cocoapods
+
+brew install cocoapods
+
+brew link --overwrite cocoapods
 
 # install node modules
 npm install

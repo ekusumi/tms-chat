@@ -8,7 +8,7 @@ cd ../../
 # install node and cocoapods
 brew install node
 
-brew uninstall --cask cocoapods
+brew uninstall cocoapods
 
 brew install cocoapods
 

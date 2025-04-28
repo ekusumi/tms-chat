@@ -17,3 +17,10 @@ cd ios
  
 # Install dependencies you manage with CocoaPods
 pod install
+
+cd ..
+
+# xcode cloud sets `CI` env var to 'TRUE':
+# This causes a crash: Error: GetEnv.NoBoolean: TRUE is not a boolean.
+# This is a workaround for that issue.
+CI="true" npx expo prebuild

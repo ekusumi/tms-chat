@@ -57,12 +57,10 @@ export const getMessage = (amityMessage: Amity.Message) => {
 
 export const getLastReadMessage = (messages: Message[]) => {
   let messageId;
-  console.log(`GET LAST READ MESSAGE COUNT: ${messages.length}`);
   messages.map((message) => {
     if (message.isDriver && message.read) {
       messageId = message.messageId;
     }
   });
-  console.log(`GET LAST READ MESSAGE ID: ${messageId}`);
   return messageId;
 };

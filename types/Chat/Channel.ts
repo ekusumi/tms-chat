@@ -104,12 +104,12 @@ export const getChannel = (amityChannel: Amity.Channel) => {
 };
 
 export const getFilterChannel = (amityMessage: Amity.Message) => {
-  let userId = amityMessage.creatorId;
+  let userId = getUserIdForChannel(amityMessage.channelId);
   let user = getUser(userId);
   let initials = getInitials(user!);
   let displayName = getFullName(user!);
 
-  let message = amityMessage.tags![0];
+  let message = amityMessage.data?.text;
 
   let timestamp = new Date(amityMessage.createdAt);
   let routeName = "";

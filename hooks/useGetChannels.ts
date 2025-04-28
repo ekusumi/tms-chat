@@ -9,30 +9,34 @@ type UseGetChannelsCallback = (result: Channel[]) => void;
 
 const useGetChannels = async (callback: UseGetChannelsCallback) => {
   Log.debug("useGetChannels hook called");
-  await AmityService.getChannels(async (amityChannels) => {
-    let channels: Channel[] = Array<Channel>();
-    amityChannels.map((amityChannel) => {
-      let channel = getChannel(amityChannel);
-      channels.push(channel);
+
+  let channels = getChannels();
+  if (channels != undefined) {
+    callback(channels);
+  } else {
+    await AmityService.getChannels(async (amityChannels) => {
+      let channels: Channel[] = Array<Channel>();
+      amityChannels.map((amityChannel) => {
+        let channel = getChannel(amityChannel);
+        channels.push(channel);
+      });
+
+      saveChannels(channels);
+      callback(channels);
+
+      let channel = channels[0];
+      if (channel.unreadCount > 0) {
+        Log.info(
+          `New Message Received for Channel: ${channel.channelId}. Will schedule local notification`
+        );
+        // await scheduleLocalNotification(channel);
+      }
     });
 
-    let jsonChannels = JSON.stringify(channels);
-    LocalStorage.saveData("channels", jsonChannels);
-
-    callback(channels);
-
-    let channel = channels[0];
-    if (channel.unreadCount > 0) {
-      Log.info(
-        `New Message Received for Channel: ${channel.channelId}. Will schedule local notification`
-      );
-      // await scheduleLocalNotification(channel);
-    }
-  });
-
-  const scheduleLocalNotification = async (channel: Channel) => {
-    await useScheduleLocalNotification(channel.displayName, channel.message);
-  };
+    const scheduleLocalNotification = async (channel: Channel) => {
+      await useScheduleLocalNotification(channel.displayName, channel.message);
+    };
+  }
 };
 
 export const sortChannelsByRecent = (channels: Channel[]) => {
@@ -81,6 +85,22 @@ export const getChannelForUserId = (userId: string) => {
   }
 
   return channelId;
+};
+
+const saveChannels = (channels: Channel[]) => {
+  let jsonChannels = JSON.stringify(channels);
+  LocalStorage.saveData("channels", jsonChannels);
+};
+
+const getChannels = () => {
+  let jsonChannels = LocalStorage.getData("channels");
+  console.log(`GET CHANNELS: ${jsonChannels}`);
+  if (jsonChannels != undefined) {
+    let channels = JSON.parse(jsonChannels) as Channel[];
+    return channels;
+  } else {
+    return undefined;
+  }
 };
 
 export default useGetChannels;

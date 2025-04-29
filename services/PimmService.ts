@@ -15,7 +15,7 @@ const PimmService = {
   },
 
   getUsersByRoles: async () => {
-    let encode = encodeURI('["RMS DISPATCHER", "SALES REP"]');
+    let encode = encodeURI('["RMS DISPATCHER", "SALES REP", "User"]');
     let request = createRequest(`/Pimm/User/GetByRoles?roles=${encode}`, "GET");
     let object = await NetworkClient.makeRequest(request);
     let users = object as [User];

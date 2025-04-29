@@ -191,20 +191,20 @@ class AmityClient {
         }
 
         if (messages) {
-          var searchTags = Array();
+          // var searchTags = Array();
 
-          messages.map((message) => {
-            if (message.tags!.length > 0) {
-              if (
-                message
-                  .tags![0].toLocaleLowerCase()
-                  .indexOf(tag.toLocaleLowerCase()) >= 0
-              ) {
-                searchTags.push(message);
-              }
-            }
-          });
-          callback(searchTags);
+          // messages.map((message) => {
+          //   if (message.tags!.length > 0) {
+          //     if (
+          //       message
+          //         .tags![0].toLocaleLowerCase()
+          //         .indexOf(tag.toLocaleLowerCase()) >= 0
+          //     ) {
+          //       searchTags.push(message);
+          //     }
+          //   }
+          // });
+          callback(messages);
         }
       }
     );

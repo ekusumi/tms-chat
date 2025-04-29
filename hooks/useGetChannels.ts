@@ -94,7 +94,6 @@ const saveChannels = (channels: Channel[]) => {
 
 const getChannels = () => {
   let jsonChannels = LocalStorage.getData("channels");
-  console.log(`GET CHANNELS: ${jsonChannels}`);
   if (jsonChannels != undefined) {
     let channels = JSON.parse(jsonChannels) as Channel[];
     return channels;

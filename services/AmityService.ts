@@ -70,7 +70,7 @@ class AmityClient {
         }
 
         if (loading) {
-          Log.debug(`Downloading all channels`);
+          // Log.debug(`Downloading all channels`);
         }
 
         if (channels) {
@@ -99,7 +99,7 @@ class AmityClient {
         }
 
         if (loading) {
-          Log.debug(`Downloading all messages`);
+          // Log.debug(`Downloading all messages`);
         }
 
         if (messages) {
@@ -133,7 +133,7 @@ class AmityClient {
         }
 
         if (loading) {
-          Log.debug(`Searching all messages`);
+          // Log.debug(`Searching all messages`);
         }
 
         if (messages) {
@@ -187,7 +187,7 @@ class AmityClient {
         }
 
         if (loading) {
-          Log.debug(`Searching all messages`);
+          // Log.debug(`Searching all messages`);
         }
 
         if (messages) {

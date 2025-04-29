@@ -9,7 +9,6 @@ import useAuthenticateUser from "../../hooks/useAuthenticateUser";
 import useGetLoginCredentials from "../../hooks/useGetLoginCredentials";
 import useGetSiteSettings from "../../hooks/useGetSiteSettings";
 import useGetUsersForSite from "../../hooks/useGetUsersForSite";
-import useGetActiveRouteShipment from "../../hooks/useGetActiveRouteShipment";
 
 import AmityService from "../../services/AmityService";
 
@@ -97,22 +96,10 @@ const LoginForm = () => {
     );
   };
 
-  const getActiveRouteShipment = async () => {
-    let siteId = LocalStorage.getData("siteId");
-    let activeRouteShipments = await useGetActiveRouteShipment(siteId!);
-    LocalStorage.saveData(
-      "activeRouteShipments",
-      JSON.stringify(activeRouteShipments)
-    );
-
-    setTimeout(getActiveRouteShipment, 60 * 1000);
-  };
-
   const getPimmData = async () => {
     await getSiteSettings();
     await getUsersForSite();
     await getUsersByRoles();
-    await getActiveRouteShipment();
     await getAssetsForDispatch();
   };
 

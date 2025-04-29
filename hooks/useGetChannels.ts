@@ -13,30 +13,30 @@ const useGetChannels = async (callback: UseGetChannelsCallback) => {
   let channels = getChannels();
   if (channels != undefined) {
     callback(channels);
-  } else {
-    await AmityService.getChannels(async (amityChannels) => {
-      let channels: Channel[] = Array<Channel>();
-      amityChannels.map((amityChannel) => {
-        let channel = getChannel(amityChannel);
-        channels.push(channel);
-      });
+  }
 
-      saveChannels(channels);
-      callback(channels);
-
-      let channel = channels[0];
-      if (channel.unreadCount > 0) {
-        Log.info(
-          `New Message Received for Channel: ${channel.channelId}. Will schedule local notification`
-        );
-        // await scheduleLocalNotification(channel);
-      }
+  await AmityService.getChannels(async (amityChannels) => {
+    let channels: Channel[] = Array<Channel>();
+    amityChannels.map((amityChannel) => {
+      let channel = getChannel(amityChannel);
+      channels.push(channel);
     });
 
-    const scheduleLocalNotification = async (channel: Channel) => {
-      await useScheduleLocalNotification(channel.displayName, channel.message);
-    };
-  }
+    saveChannels(channels);
+    callback(channels);
+
+    let channel = channels[0];
+    if (channel.unreadCount > 0) {
+      Log.info(
+        `New Message Received for Channel: ${channel.channelId}. Will schedule local notification`
+      );
+      // await scheduleLocalNotification(channel);
+    }
+  });
+
+  const scheduleLocalNotification = async (channel: Channel) => {
+    await useScheduleLocalNotification(channel.displayName, channel.message);
+  };
 };
 
 export const sortChannelsByRecent = (channels: Channel[]) => {
@@ -94,7 +94,6 @@ const saveChannels = (channels: Channel[]) => {
 
 const getChannels = () => {
   let jsonChannels = LocalStorage.getData("channels");
-  console.log(`GET CHANNELS: ${jsonChannels}`);
   if (jsonChannels != undefined) {
     let channels = JSON.parse(jsonChannels) as Channel[];
     return channels;

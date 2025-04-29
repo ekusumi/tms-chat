@@ -22,6 +22,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import SearchListItem from "../components/views/SearchListItem";
 import { Search } from "../types/Chat/Search";
 import useFilterMessage from "../hooks/useFilterMessage";
+import useGetActiveRouteShipment from "../hooks/useGetActiveRouteShipment";
+import LocalStorage from "../utils/LocalStorage";
 
 const btn_new_message = require("../assets/button/new_message_button.png");
 
@@ -111,14 +113,27 @@ const ChannelPage = () => {
     );
   };
 
-  useEffect(() => {
-    const getChannels = async () => {
-      await useGetChannels((channels) => {
-        setAllChannels(channels!);
-      });
-    };
+  const getActiveRouteShipment = async () => {
+    let siteId = LocalStorage.getData("siteId");
+    let activeRouteShipments = await useGetActiveRouteShipment(siteId!);
+    LocalStorage.saveData(
+      "activeRouteShipments",
+      JSON.stringify(activeRouteShipments)
+    );
 
     getChannels();
+    setTimeout(getActiveRouteShipment, 50 * 1000);
+  };
+
+  const getChannels = async () => {
+    await useGetChannels((channels) => {
+      setAllChannels(channels!);
+    });
+  };
+
+  useEffect(() => {
+    getChannels();
+    getActiveRouteShipment();
   }, []);
 
   useFocusEffect(

@@ -9,7 +9,7 @@ import User, { getFullName, getInitials, getRole } from "../types/Pimm/User";
 import getUsersForSite from "../hooks/useGetUsersForSite";
 import LocalStorage from "../utils/LocalStorage";
 import Loader from "../components/views/Loader";
-import useGetUsersByRole from "../hooks/useGetUsersByRole";
+import useGetUsersByRole, { sortUsers } from "../hooks/useGetUsersByRole";
 
 const btn_back = require("../assets/button/back_button.png");
 
@@ -45,47 +45,13 @@ const ContactsPage = () => {
     const getContacts = async () => {
       setIsLoading(true);
       let siteId = LocalStorage.getData("siteId")!;
-      let contacts = await useGetUsersByRole();
+      let users = await useGetUsersByRole();
       // contacts.sort((a, b) => (getFullName(a) > getFullName(b) ? 1 : -1));
 
-      let dispatchers = new Array();
-      let drivers = new Array();
-      let salesReps = new Array();
+      let contacts = sortUsers(users);
+      setAllContacts(contacts!);
 
-      contacts.map((contact) => {
-        if (contact.firstName != undefined && contact.firstName.length > 0) {
-          contact.roles.map((role) => {
-            if (role == "RMS DISPATCHERS") {
-              dispatchers.push(contact);
-            } else if (role.indexOf("DRIVERS") != -1) {
-              drivers.push(contact);
-            } else if (role == "SALES REP") {
-              salesReps.push(contact);
-            }
-          });
-        }
-      });
-
-      let newContacts = new Array();
-      newContacts.push(...dispatchers);
-      newContacts.push(...drivers);
-      newContacts.push(...salesReps);
-
-      setAllContacts(newContacts!);
-
-      dispatchers.map((contact) => {
-        console.log(`DISPATCHERS: ${getFullName(contact)}`);
-      });
-
-      drivers.map((contact) => {
-        console.log(`DRIVERS: ${getFullName(contact)}`);
-      });
-
-      salesReps.map((contact) => {
-        console.log(`SALES REP: ${getFullName(contact)}`);
-      });
-
-      LocalStorage.saveData("contacts", JSON.stringify(newContacts));
+      LocalStorage.saveData("contacts", JSON.stringify(contacts));
       setIsLoading(false);
     };
 

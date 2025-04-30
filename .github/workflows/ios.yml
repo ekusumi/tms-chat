@@ -43,4 +43,4 @@ jobs:
       - name: Build
         run: |
           cd ios
-          xcodebuild clean build -workspace tmschat.xcworkspace -scheme tmschat -destination 'platform=iOS Simulator,name=iPhone 16 example,OS=18.0'
+          xcodebuild clean build -workspace tmschat.xcworkspace -scheme tmschat -destination 'platform=iOS Simulator,name=iPhone 16 example,OS=18.1'

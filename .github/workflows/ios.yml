@@ -32,11 +32,13 @@ jobs:
       - name: Install CocoaPods dependencies
         run: |
           cd ios
-          pod install
-          pod update
+          pod repo remove master
+          pod setup
 
       - name: Select Xcode
-        run: sudo Xcode-select -switch /Applications/Xcode_16.2.app/Contents/Developer
+        run: |
+          ls
+          sudo Xcode-select -switch /Applications/Xcode_16.2.app/Contents/Developer
 
       - name: Build
         run: xcodebuild clean build -workspace tmschat.xcworkspace -scheme tmschat -destination 'platform=iOS Simulator,name=iPhone 16 example,OS=18.0'

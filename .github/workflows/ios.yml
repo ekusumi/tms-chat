@@ -37,8 +37,10 @@ jobs:
 
       - name: Select Xcode
         run: |
-          ls
+          cd ios
           sudo Xcode-select -switch /Applications/Xcode_16.2.app/Contents/Developer
 
       - name: Build
-        run: xcodebuild clean build -workspace tmschat.xcworkspace -scheme tmschat -destination 'platform=iOS Simulator,name=iPhone 16 example,OS=18.0'
+        run: |
+          cd ios
+          xcodebuild clean build -workspace tmschat.xcworkspace -scheme tmschat -destination 'platform=iOS Simulator,name=iPhone 16 example,OS=18.0'

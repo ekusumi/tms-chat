@@ -2,9 +2,9 @@ name: Xcode - Build and Analyze
 
 on:
   push:
-    branches: [ "test" ]
+    branches: ["test"]
   pull_request:
-    branches: [ "test" ]
+    branches: ["test"]
 
 jobs:
   build:
@@ -14,12 +14,33 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Expo CLI
+        run: npm install -g expo-cli
+
+      - name: Prebuild iOS project
+        run: npx expo prebuild --platform ios
+
+      - name: Install CocoaPods dependencies
+        run: |
+          cd ios
+          pod install
+
       - name: Set Default Scheme
         run: |
           scheme_list=$(xcodebuild -list -json | tr -d "\n")
           default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
           echo $default | cat >default
           echo Using default scheme: $default
+
       - name: Build
         env:
           scheme: ${{ 'default' }}

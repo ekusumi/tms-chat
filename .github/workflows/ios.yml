@@ -32,8 +32,8 @@ jobs:
       - name: Install CocoaPods dependencies
         run: |
           cd ios
-          pod repo remove master
-          pod setup
+          pod install
+          pod update
 
       - name: Select Xcode
         run: |

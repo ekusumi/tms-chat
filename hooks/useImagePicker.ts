@@ -10,13 +10,11 @@ const useImagePicker = async (
   Log.debug("useImagePicker hook called");
 
   const chooseFromLibrary = async () => {
-    console.log("chooseFromLibrary");
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
       quality: 1,
     });
 
-    console.log("chooseFromLibrary result");
     if (result.assets) {
       Log.info(`User selected a photo from library ${result.assets![0].uri}`);
       callback(result.assets![0].uri);
@@ -27,7 +25,6 @@ const useImagePicker = async (
   };
 
   const takeAPhoto = async () => {
-    console.log("takeAPhoto");
     const permission = await ImagePicker.requestCameraPermissionsAsync();
 
     if (permission.granted) {
@@ -45,8 +42,6 @@ const useImagePicker = async (
       }
     }
   };
-
-  console.log("IMAGE PICKER: " + selection);
 
   if (selection == 1) {
     await chooseFromLibrary();

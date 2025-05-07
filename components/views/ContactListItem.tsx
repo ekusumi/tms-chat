@@ -22,7 +22,6 @@ const ContactListItem = ({
   role: string;
 }) => {
   const onClick_contactListItem = async (userId: string) => {
-    console.log("List Item clicked: " + userId);
     let channelId = getChannelForUserId(userId);
     router.dismiss();
     router.push(`/channel/${channelId}`);

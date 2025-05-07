@@ -5,8 +5,6 @@ const useGetAudioPermission = async () => {
   const status = await AudioModule.requestRecordingPermissionsAsync();
   if (!status.granted) {
     Alert.alert("Permission to access microphone was denied");
-  } else {
-    console.log("Microphone permission is granted");
   }
 };
 

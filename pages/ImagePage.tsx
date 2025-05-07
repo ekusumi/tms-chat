@@ -9,8 +9,6 @@ import { WebView } from "react-native-webview";
 const btn_back = require("../assets/button/back_button.png");
 
 const ImagePage = ({ fileId }: { fileId: string }) => {
-  console.log("IMAGE PAGE");
-
   const onClick_btnBack = () => {
     Log.info("Back button clicked!");
     router.dismiss();

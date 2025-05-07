@@ -182,7 +182,6 @@ const MessagePage = ({ channelId }: { channelId: string | null }) => {
     let permission = await getAudioPermission();
     if (permission.granted) {
       if (recorderState == RecorderState.stopped) {
-        console.log(`START RECORD`);
         waveFormRef.current?.startRecord({
           updateFrequency: UpdateFrequency.high,
         });
@@ -195,7 +194,6 @@ const MessagePage = ({ channelId }: { channelId: string | null }) => {
     Log.info("Stop recording");
     if (recorderState == RecorderState.recording) {
       waveFormRef.current?.stopRecord().then((path) => {
-        console.log(`STOP RECORD: ${JSON.stringify(path)}`);
         setAudioPath(path);
         setIsRecording(false);
       });
@@ -212,8 +210,6 @@ const MessagePage = ({ channelId }: { channelId: string | null }) => {
       } else {
         waveFormRef.current?.pausePlayer();
       }
-      console.log(`isRecording: ${JSON.stringify(isRecording)}`);
-      console.log(`waveFormRef: ${JSON.stringify(waveFormRef)}`);
     }
   };
 
@@ -254,7 +250,6 @@ const MessagePage = ({ channelId }: { channelId: string | null }) => {
     }
 
     if (imagePreviewPath) {
-      console.log("sending image message");
       let message = await useSendImageMessage(
         channelId!,
         imagePreviewPath,
@@ -263,7 +258,6 @@ const MessagePage = ({ channelId }: { channelId: string | null }) => {
       allMessages.push(message);
       setImagePreviewPath(null);
     } else {
-      console.log("sending text message");
       let message = await useSendTextMessage(
         channelId!,
         text!,
@@ -491,11 +485,6 @@ const MessagePage = ({ channelId }: { channelId: string | null }) => {
                   candleHeightScale={1}
                   onRecorderStateChange={(state) => {
                     setRecorderState(state);
-                    console.log(
-                      `STATE: ${JSON.stringify(
-                        state
-                      )} RECORDERSTATE: ${JSON.stringify(recorderState)}`
-                    );
                   }}
                   containerStyle={audioStyles.waveStyle}
                 />
@@ -511,13 +500,7 @@ const MessagePage = ({ channelId }: { channelId: string | null }) => {
                   scrubColor="black"
                   onPlayerStateChange={(state) => {
                     setPlayerState(state);
-                    console.log(
-                      `STATE: ${JSON.stringify(
-                        state
-                      )} PLAYERSTATE: ${JSON.stringify(playerState)}`
-                    );
                   }}
-                  onPanStateChange={(isMoving) => console.log(isMoving)}
                   containerStyle={audioStyles.waveStyle}
                 />
               )}

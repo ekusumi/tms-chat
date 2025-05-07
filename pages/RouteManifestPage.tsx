@@ -17,7 +17,6 @@ const RouteManifestPage = ({ deliveryId }: { deliveryId: string }) => {
   const [stops, setStops] = useState<RouteManifestListItem[]>();
 
   const onClick_btnBack = () => {
-    console.log("Back button clicked!");
     router.navigate("../");
   };
 

@@ -27,7 +27,6 @@ const ChatListItem = ({
   unreadCount: number;
 }) => {
   const onClick_chatListItem = (channelId: string) => {
-    console.log(`List Item clicked: ${channelId}`);
     router.push(`/channel/${channelId}`);
   };
 

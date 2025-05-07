@@ -56,30 +56,32 @@ class AmityClient {
   }
 
   public getChannels(callback: ChannelCallbackFunction) {
-    this.amityChannelsUnsubscriber = ChannelRepository.getChannels(
-      {
-        isDeleted: false,
-        sortBy: "lastActivity",
-        membership: "member",
-        types: ["conversation"],
-        limit: 100,
-      },
-      ({ data: channels, onNextPage, hasNextPage, loading, error }) => {
-        if (error) {
-          Log.error(`Failed to get channels with error: ${error}`);
-        }
+    if (this.amityChannelsUnsubscriber == undefined) {
+      this.amityChannelsUnsubscriber = ChannelRepository.getChannels(
+        {
+          isDeleted: false,
+          sortBy: "lastActivity",
+          membership: "member",
+          types: ["conversation"],
+          limit: 100,
+        },
+        ({ data: channels, onNextPage, hasNextPage, loading, error }) => {
+          if (error) {
+            Log.error(`Failed to get channels with error: ${error}`);
+          }
 
-        if (loading) {
-          // Log.debug(`Downloading all channels`);
-        }
+          if (loading) {
+            // Log.debug(`Downloading all channels`);
+          }
 
-        if (channels) {
-          Log.debug(`Successfully downloaded ${channels.length} channels`);
-          this.amityChannels = channels;
-          callback(channels);
+          if (channels) {
+            Log.debug(`Successfully downloaded ${channels.length} channels`);
+            this.amityChannels = channels;
+            callback(channels);
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   public async markChannelRead(channelId: string) {

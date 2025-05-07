@@ -182,7 +182,6 @@ const MessagePage = ({ channelId }: { channelId: string | null }) => {
     let permission = await getAudioPermission();
     if (permission.granted) {
       if (recorderState == RecorderState.stopped) {
-        console.log(`START RECORD`);
         waveFormRef.current?.startRecord({
           updateFrequency: UpdateFrequency.high,
         });
@@ -195,7 +194,6 @@ const MessagePage = ({ channelId }: { channelId: string | null }) => {
     Log.info("Stop recording");
     if (recorderState == RecorderState.recording) {
       waveFormRef.current?.stopRecord().then((path) => {
-        console.log(`STOP RECORD: ${JSON.stringify(path)}`);
         setAudioPath(path);
         setIsRecording(false);
       });
@@ -212,8 +210,6 @@ const MessagePage = ({ channelId }: { channelId: string | null }) => {
       } else {
         waveFormRef.current?.pausePlayer();
       }
-      console.log(`isRecording: ${JSON.stringify(isRecording)}`);
-      console.log(`waveFormRef: ${JSON.stringify(waveFormRef)}`);
     }
   };
 
@@ -254,7 +250,6 @@ const MessagePage = ({ channelId }: { channelId: string | null }) => {
     }
 
     if (imagePreviewPath) {
-      console.log("sending image message");
       let message = await useSendImageMessage(
         channelId!,
         imagePreviewPath,
@@ -263,7 +258,6 @@ const MessagePage = ({ channelId }: { channelId: string | null }) => {
       allMessages.push(message);
       setImagePreviewPath(null);
     } else {
-      console.log("sending text message");
       let message = await useSendTextMessage(
         channelId!,
         text!,
@@ -399,63 +393,65 @@ const MessagePage = ({ channelId }: { channelId: string | null }) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <View style={tagViewStyles.container}>
-          <Popover
-            isVisible={showTag}
-            onRequestClose={() => setShowTag(false)}
-            popoverStyle={{ backgroundColor: "#333", borderRadius: 10 }}
-            from={
-              <TouchableOpacity
-                style={tagButtonStyles.background}
-                onPress={() => (routeName ? setShowTag(true) : null)}
-              >
-                <Image source={btn_tag} style={tagButtonStyles.image} />
-              </TouchableOpacity>
-            }
-          >
-            <View style={tagPopOverStyles.background}>
-              <View style={tagPopOverStyles.navigation}>
-                <Text style={tagPopOverStyles.label}>Link to:</Text>
-                <ImageButton
-                  image={btn_store_tag}
-                  styles={tagPopOverButtonStyles}
-                  onClick={onClick_btnTractorTag}
-                />
-                <ImageButton
-                  image={btn_tractor_tag}
-                  styles={tagPopOverButtonStyles}
-                  onClick={onClick_btnTractorTag}
-                />
-                <ImageButton
-                  image={btn_trailer_tag}
-                  styles={tagPopOverButtonStyles}
-                  onClick={onClick_btnTrailerTag}
-                />
+        {routeName ? (
+          <View style={tagViewStyles.container}>
+            <Popover
+              isVisible={showTag}
+              onRequestClose={() => setShowTag(false)}
+              popoverStyle={{ backgroundColor: "#333", borderRadius: 10 }}
+              from={
+                <TouchableOpacity
+                  style={tagButtonStyles.background}
+                  onPress={() => (routeName ? setShowTag(true) : null)}
+                >
+                  <Image source={btn_tag} style={tagButtonStyles.image} />
+                </TouchableOpacity>
+              }
+            >
+              <View style={tagPopOverStyles.background}>
+                <View style={tagPopOverStyles.navigation}>
+                  <Text style={tagPopOverStyles.label}>Link to:</Text>
+                  <ImageButton
+                    image={btn_store_tag}
+                    styles={tagPopOverButtonStyles}
+                    onClick={onClick_btnTractorTag}
+                  />
+                  <ImageButton
+                    image={btn_tractor_tag}
+                    styles={tagPopOverButtonStyles}
+                    onClick={onClick_btnTractorTag}
+                  />
+                  <ImageButton
+                    image={btn_trailer_tag}
+                    styles={tagPopOverButtonStyles}
+                    onClick={onClick_btnTrailerTag}
+                  />
+                </View>
+                <View style={tagPopOverStyles.stopList}>
+                  <FlatList
+                    data={stops}
+                    renderItem={({ item, index }) => (
+                      <TagListItem
+                        key={index}
+                        stopNo={`Stop ${String(index + 1)}`}
+                        stopName={item.SiteName}
+                        onClick={onClick_btnStoreTag}
+                      />
+                    )}
+                  />
+                </View>
               </View>
-              <View style={tagPopOverStyles.stopList}>
-                <FlatList
-                  data={stops}
-                  renderItem={({ item, index }) => (
-                    <TagListItem
-                      key={index}
-                      stopNo={`Stop ${String(index + 1)}`}
-                      stopName={item.SiteName}
-                      onClick={onClick_btnStoreTag}
-                    />
-                  )}
-                />
-              </View>
-            </View>
-          </Popover>
+            </Popover>
 
-          {tag ? (
-            <Pressable onPress={() => onClick_btnRemoveTag()}>
-              <View style={selectedTagStyles.background}>
-                <Text style={selectedTagStyles.text}>{tag}</Text>
-              </View>
-            </Pressable>
-          ) : null}
-        </View>
+            {tag ? (
+              <Pressable onPress={() => onClick_btnRemoveTag()}>
+                <View style={selectedTagStyles.background}>
+                  <Text style={selectedTagStyles.text}>{tag}</Text>
+                </View>
+              </Pressable>
+            ) : null}
+          </View>
+        ) : null}
 
         <View style={styles.viewFooter}>
           {audioPath == undefined ? (
@@ -491,11 +487,6 @@ const MessagePage = ({ channelId }: { channelId: string | null }) => {
                   candleHeightScale={1}
                   onRecorderStateChange={(state) => {
                     setRecorderState(state);
-                    console.log(
-                      `STATE: ${JSON.stringify(
-                        state
-                      )} RECORDERSTATE: ${JSON.stringify(recorderState)}`
-                    );
                   }}
                   containerStyle={audioStyles.waveStyle}
                 />
@@ -511,13 +502,7 @@ const MessagePage = ({ channelId }: { channelId: string | null }) => {
                   scrubColor="black"
                   onPlayerStateChange={(state) => {
                     setPlayerState(state);
-                    console.log(
-                      `STATE: ${JSON.stringify(
-                        state
-                      )} PLAYERSTATE: ${JSON.stringify(playerState)}`
-                    );
                   }}
-                  onPanStateChange={(isMoving) => console.log(isMoving)}
                   containerStyle={audioStyles.waveStyle}
                 />
               )}
@@ -645,7 +630,7 @@ const styles = StyleSheet.create({
   textInput: {
     margin: 15,
     height: 50,
-    width: "100%",
+    width: "80%",
   },
   viewInput: {
     width: "72.5%",

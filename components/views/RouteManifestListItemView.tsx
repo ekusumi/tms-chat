@@ -23,17 +23,14 @@ const RouteManifestListItemView = ({
   let odd = item.index % 2;
 
   const onClick_btnStop = () => {
-    console.log(`Stop Icon has been clicked ${item.siteId}`);
     router.push(`/store-profile/${item.siteId}`);
   };
 
   const onClick_btnQuickSend = () => {
-    console.log("Quick Send Button has been clicked!");
     router.push("/channel/Franks Sales");
   };
 
   const onClick_btnPO = () => {
-    console.log("PO Button has been clicked!");
     router.push("/po-data/[id]");
   };
 

@@ -18,7 +18,6 @@ const ContactsPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onClick_btnBack = () => {
-    console.log("Back button clicked!");
     router.navigate("../");
   };
 

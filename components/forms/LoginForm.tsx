@@ -20,6 +20,9 @@ import useGetUsersByRole from "../../hooks/useGetUsersByRole";
 import Log from "../../utils/Log";
 import Loader from "../views/Loader";
 import useGetAssetsForDispatch from "../../hooks/useGetAssetsForDispatch";
+import useGetChannels, {
+  useDownloadChannels,
+} from "../../hooks/useGetChannels";
 
 const LoginForm = () => {
   const [spid, setSpid] = useState("");
@@ -88,9 +91,7 @@ const LoginForm = () => {
       [
         {
           text: "OK",
-          onPress: () => {
-            console.log("OK Pressed");
-          },
+          onPress: () => {},
         },
       ]
     );
@@ -105,7 +106,7 @@ const LoginForm = () => {
 
   const loginToAmity = async () => {
     let userId = LocalStorage.getData("loginId");
-    let isConnected = AmityService.initClient(userId!);
+    let isConnected = await AmityService.initClient(userId!);
     return isConnected;
   };
 
@@ -144,9 +145,12 @@ const LoginForm = () => {
           let success = await loginToAmity();
           if (success) {
             Log.info("Successfully logged in to Amity Server");
-            setIsLoading(false);
-            setLoginClicked(false);
-            router.push("/channel/list");
+            setTimeout(async () => {
+              await useDownloadChannels();
+              setIsLoading(false);
+              setLoginClicked(false);
+              router.push("/channel/list");
+            }, 5000);
           } else {
             setIsLoading(false);
             setLoginClicked(false);

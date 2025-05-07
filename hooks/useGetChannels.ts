@@ -4,35 +4,33 @@ import { Channel, getChannel } from "../types/Chat/Channel";
 import LocalStorage from "../utils/LocalStorage";
 import Log from "../utils/Log";
 import useScheduleLocalNotification from "./useScheduleLocalNotification";
+import { getMessage, Message } from "../types/Chat/Message";
 
 type UseGetChannelsCallback = (result: Channel[]) => void;
 
-const useGetChannels = async (callback: UseGetChannelsCallback) => {
-  Log.debug("useGetChannels hook called");
+let channelCallback: UseGetChannelsCallback;
 
-  let channels = getChannels();
-  if (channels != undefined) {
-    callback(channels);
-  }
-
+export const useDownloadChannels = async () => {
+  Log.debug("useDownloadChannels hook called");
   await AmityService.getChannels(async (amityChannels) => {
     let channels: Channel[] = Array<Channel>();
-    amityChannels.map((amityChannel) => {
+    amityChannels.map(async (amityChannel) => {
       let channel = getChannel(amityChannel);
       channels.push(channel);
     });
 
     saveChannels(channels);
-    callback(channels);
-
-    let channel = channels[0];
-    if (channel.unreadCount > 0) {
-      Log.info(
-        `New Message Received for Channel: ${channel.channelId}. Will schedule local notification`
-      );
-      // await scheduleLocalNotification(channel);
-    }
+    channelCallback(channels);
   });
+};
+
+const useGetChannels = async (callback: UseGetChannelsCallback) => {
+  Log.debug("useGetChannels hook called");
+  channelCallback = callback;
+  let channels = getChannels();
+  if (channels != undefined) {
+    callback(channels);
+  }
 
   const scheduleLocalNotification = async (channel: Channel) => {
     await useScheduleLocalNotification(channel.displayName, channel.message);
@@ -100,6 +98,16 @@ const getChannels = () => {
   } else {
     return undefined;
   }
+};
+
+// const saveMessages = (amityMessages: Amity.Message[], channelId: string) => {
+//   let jsonMessages = JSON.stringify(amityMessages);
+//   LocalStorage.saveData("messages_" + channelId, jsonMessages);
+// };
+
+const saveMessages = (messages: Message[], channelId: string) => {
+  let jsonMessages = JSON.stringify(messages);
+  LocalStorage.saveData("messages_" + channelId, jsonMessages);
 };
 
 export default useGetChannels;

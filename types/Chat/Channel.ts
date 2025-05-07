@@ -1,6 +1,7 @@
 import LocalStorage from "../../utils/LocalStorage";
 import { getRouteName } from "../Pimm/ActiveRouteShipment";
 import { getUser, getInitials, getFullName } from "../Pimm/User";
+import { Message } from "./Message";
 
 export type Channel = {
   channelId: string;
@@ -127,6 +128,38 @@ export const getFilterChannel = (amityMessage: Amity.Message) => {
     unreadCount: 0,
     route: routeName,
     lastActivity: amityMessage.createdAt,
+  };
+
+  return channel;
+};
+
+export const getFilterChannelFromMessage = (
+  message: Message,
+  channelId: string
+) => {
+  let userId = getUserIdForChannel(channelId);
+  let user = getUser(userId);
+  let initials = getInitials(user!);
+  let displayName = getFullName(user!);
+
+  let text = message.data?.text;
+
+  let timestamp = new Date(message.timestamp);
+  let routeName = "";
+
+  let channel: Channel = {
+    channelId: channelId,
+    userId: userId,
+    displayName: displayName,
+    initials: initials,
+    message: text,
+    timestamp: timestamp.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+    unreadCount: 0,
+    route: routeName,
+    lastActivity: message.timestamp,
   };
 
   return channel;

@@ -85,9 +85,9 @@ export const getChannelForUserId = (userId: string) => {
   return channelId;
 };
 
-const saveChannels = (channels: Channel[]) => {
+const saveChannels = async (channels: Channel[]) => {
   let jsonChannels = JSON.stringify(channels);
-  LocalStorage.saveData("channels", jsonChannels);
+  await LocalStorage.saveData("channels", jsonChannels);
 };
 
 const getChannels = () => {
@@ -105,9 +105,9 @@ const getChannels = () => {
 //   LocalStorage.saveData("messages_" + channelId, jsonMessages);
 // };
 
-const saveMessages = (messages: Message[], channelId: string) => {
+const saveMessages = async (messages: Message[], channelId: string) => {
   let jsonMessages = JSON.stringify(messages);
-  LocalStorage.saveData("messages_" + channelId, jsonMessages);
+  await LocalStorage.saveData("messages_" + channelId, jsonMessages);
 };
 
 export default useGetChannels;

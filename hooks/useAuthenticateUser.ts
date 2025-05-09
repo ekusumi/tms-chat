@@ -42,9 +42,9 @@ const saveSpidUsernameAndPassword = async (
   username: string,
   password: string
 ) => {
-  LocalStorage.saveData("spid", spid);
-  LocalStorage.saveData("username", username);
-  LocalStorage.saveData("password", password);
+  await LocalStorage.saveData("spid", spid);
+  await LocalStorage.saveData("username", username);
+  await LocalStorage.saveData("password", password);
 };
 
 const checkUserRole = (user: User) => {

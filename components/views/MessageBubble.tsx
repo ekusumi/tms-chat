@@ -56,16 +56,16 @@ const MessageBubble = ({
     }
   };
 
-  const onClick_btnAcknowledge = (message: Message) => {
+  const onClick_btnAcknowledge = async (message: Message) => {
     if (message.isDriver == false) {
       let messageId = message.messageId;
-      let clickedMessageId = LocalStorage.getData("acknowledge");
+      let clickedMessageId = await LocalStorage.getData("acknowledge");
       if (clickedMessageId == messageId) {
         Log.info(`Acknowledging Message: ${messageId}`);
         useAddMessageReaction(messageId, "acknowledge");
-        LocalStorage.saveData("acknowledge", "");
+        await LocalStorage.saveData("acknowledge", "");
       } else {
-        LocalStorage.saveData("acknowledge", messageId);
+        await LocalStorage.saveData("acknowledge", messageId);
       }
     }
   };

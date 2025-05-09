@@ -47,8 +47,8 @@ export const getSiteId = (channel: any) => {
   return siteId;
 };
 
-export const saveChannel = (channelId: string, userId: string) => {
-  LocalStorage.saveData(channelId, userId);
+export const saveChannel = async (channelId: string, userId: string) => {
+  await LocalStorage.saveData(channelId, userId);
 };
 
 export const getUserIdForChannel = (channelId: string) => {
@@ -64,10 +64,10 @@ export const getUserIdForChannel = (channelId: string) => {
   }
 };
 
-export const getChannel = (amityChannel: Amity.Channel) => {
-  let loginId = LocalStorage.getData("loginId");
+export const getChannel = async (amityChannel: Amity.Channel) => {
+  let loginId = await LocalStorage.getData("loginId");
   let userId = getUserId(loginId!, amityChannel);
-  LocalStorage.saveData(amityChannel.channelId, userId);
+  await LocalStorage.saveData(amityChannel.channelId, userId);
 
   let user = getUser(userId);
   let initials = getInitials(user!);

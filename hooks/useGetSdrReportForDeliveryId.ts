@@ -10,10 +10,10 @@ const useGetSdrReportForDeliveryId = async (deliveryId: string) => {
   return sdrReport;
 };
 
-const saveSdrReport = (deliveryId: string, sdrReport: SdrReport) => {
-  LocalStorage.saveData(deliveryId, JSON.stringify(sdrReport));
-  sdrReport.Hierarchy.GIS.Stops.map((sdrStop) => {
-    LocalStorage.saveData(sdrStop.SiteId, JSON.stringify(sdrStop));
+const saveSdrReport = async (deliveryId: string, sdrReport: SdrReport) => {
+  await LocalStorage.saveData(deliveryId, JSON.stringify(sdrReport));
+  sdrReport.Hierarchy.GIS.Stops.map(async (sdrStop) => {
+    await LocalStorage.saveData(sdrStop.SiteId, JSON.stringify(sdrStop));
   });
 };
 

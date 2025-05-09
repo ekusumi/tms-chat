@@ -23,12 +23,14 @@ class Storage {
 }
 
 const LocalStorage = {
-  saveData: (key: string, value: string) => {
-    Storage.getInstance().setItem(key, value);
+  saveData: async (key: string, value: string) => {
+    // Storage.getInstance().setItem(key, value);
+    await AsyncStorage.setItem(key, value);
   },
 
-  getData: (key: string) => {
-    return Storage.getInstance().getItem(key);
+  getData: async (key: string) => {
+    // return Storage.getInstance().getItem(key);
+    return await AsyncStorage.getItem(key);
   },
 
   removePersistentData: async (key: string) => {

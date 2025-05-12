@@ -12,6 +12,7 @@ import ChatListItem from "../components/views/ChatListItem";
 import useGetChannels, {
   sortChannelsByContact,
   sortChannelsByRecent,
+  useGetLocalChannels,
 } from "../hooks/useGetChannels";
 import { useCallback, useEffect, useState } from "react";
 import { Channel } from "../types/Chat/Channel";
@@ -25,6 +26,8 @@ import useFilterMessage from "../hooks/useFilterMessage";
 import useGetActiveRouteShipment from "../hooks/useGetActiveRouteShipment";
 import LocalStorage from "../utils/LocalStorage";
 import Log from "../utils/Log";
+import useGetMessages, { getMessages } from "../hooks/useGetMessages";
+import useUnsubscribeGetMessages from "../hooks/useUnsubscribeGetMessages";
 
 const btn_new_message = require("../assets/button/new_message_button.png");
 
@@ -55,22 +58,22 @@ const ChannelPage = () => {
     getChannels();
   };
 
-  const onClick_btnSortStore = () => {
+  const onClick_btnSortStore = async () => {
     Log.info("Sort Store button clicked!");
     setSelectedSort(3);
-    // getChannels();
+    getChannels();
   };
 
-  const onClick_btnSortTractor = () => {
+  const onClick_btnSortTractor = async () => {
     Log.info("Sort Tractor button clicked!");
     setSelectedSort(4);
-    // getChannels();
+    getChannels();
   };
 
-  const onClick_btnSortTrailer = () => {
+  const onClick_btnSortTrailer = async () => {
     Log.info("Sort Trailer button clicked!");
     setSelectedSort(5);
-    // getChannels();
+    getChannels();
   };
 
   const onClick_btnNewMessage = () => {
@@ -111,22 +114,41 @@ const ChannelPage = () => {
     useGetChannels((channels) => {
       console.log("SORT: " + selectedSort);
       if (selectedSort == 1) {
+        if (channels.length > 0) {
+          downloadMessages();
+        }
         setAllChannels(sortChannelsByRecent(channels));
       } else if (selectedSort == 2) {
         setAllChannels(sortChannelsByContact(channels));
       } else if (selectedSort == 3) {
         useFilterMessage(channels, "Store:", (tagMessages) => {
+          console.log("TAG STORE: " + tagMessages.length);
           setAllChannels(tagMessages);
         });
       } else if (selectedSort == 4) {
         useFilterMessage(channels, "Tractor:", (tagMessages) => {
+          console.log("TAG TRACTOR: " + tagMessages.length);
           setAllChannels(tagMessages);
         });
       } else if (selectedSort == 5) {
         useFilterMessage(channels, "Trailer:", (tagMessages) => {
+          console.log("TAG TRAILER: " + tagMessages.length);
           setAllChannels(tagMessages);
         });
       }
+    });
+  };
+
+  const downloadMessages = () => {
+    useGetLocalChannels((channels) => {
+      channels.map(async (channel) => {
+        let messages = getMessages(channel.channelId);
+        if (messages == undefined) {
+          await useGetMessages(channel.channelId, (messages) => {
+            useUnsubscribeGetMessages();
+          });
+        }
+      });
     });
   };
 

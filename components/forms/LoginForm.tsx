@@ -20,9 +20,7 @@ import useGetUsersByRole from "../../hooks/useGetUsersByRole";
 import Log from "../../utils/Log";
 import Loader from "../views/Loader";
 import useGetAssetsForDispatch from "../../hooks/useGetAssetsForDispatch";
-import useGetChannels, {
-  useDownloadChannels,
-} from "../../hooks/useGetChannels";
+import { useDownloadChannels } from "../../hooks/useGetChannels";
 
 const LoginForm = () => {
   const [spid, setSpid] = useState("");
@@ -110,6 +108,16 @@ const LoginForm = () => {
     return isConnected;
   };
 
+  // const downloadMessages = () => {
+  //   useGetLocalChannels((channels) => {
+  //     channels.map(async (channel) => {
+  //       await useGetMessages(channel.channelId, (messages) => {
+  //         useUnsubscribeGetMessages();
+  //       });
+  //     });
+  //   });
+  // };
+
   useEffect(() => {
     const checkIfSavedLoginExists = async () => {
       let login = await useGetLoginCredentials();
@@ -147,6 +155,7 @@ const LoginForm = () => {
             Log.info("Successfully logged in to Amity Server");
             setTimeout(async () => {
               await useDownloadChannels();
+              // downloadMessages();
               setIsLoading(false);
               setLoginClicked(false);
               router.push("/channel/list");

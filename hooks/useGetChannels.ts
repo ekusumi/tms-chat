@@ -1,10 +1,9 @@
-import { channel } from "diagnostics_channel";
 import AmityService from "../services/AmityService";
 import { Channel, getChannel } from "../types/Chat/Channel";
 import LocalStorage from "../utils/LocalStorage";
 import Log from "../utils/Log";
 import useScheduleLocalNotification from "./useScheduleLocalNotification";
-import { getMessage, Message } from "../types/Chat/Message";
+import { Message } from "../types/Chat/Message";
 
 type UseGetChannelsCallback = (result: Channel[]) => void;
 
@@ -24,7 +23,7 @@ export const useDownloadChannels = async () => {
   });
 };
 
-const useGetChannels = async (callback: UseGetChannelsCallback) => {
+const useGetChannels = (callback: UseGetChannelsCallback) => {
   Log.debug("useGetChannels hook called");
   channelCallback = callback;
   let channels = getChannels();
@@ -35,6 +34,14 @@ const useGetChannels = async (callback: UseGetChannelsCallback) => {
   const scheduleLocalNotification = async (channel: Channel) => {
     await useScheduleLocalNotification(channel.displayName, channel.message);
   };
+};
+
+export const useGetLocalChannels = (callback: UseGetChannelsCallback) => {
+  Log.debug("useGetLocalChannels hook called");
+  let channels = getChannels();
+  if (channels != undefined) {
+    callback(channels);
+  }
 };
 
 export const sortChannelsByRecent = (channels: Channel[]) => {
@@ -105,9 +112,9 @@ const getChannels = () => {
 //   LocalStorage.saveData("messages_" + channelId, jsonMessages);
 // };
 
-const saveMessages = (messages: Message[], channelId: string) => {
-  let jsonMessages = JSON.stringify(messages);
-  LocalStorage.saveData("messages_" + channelId, jsonMessages);
-};
+// const saveMessages = (messages: Message[], channelId: string) => {
+//   let jsonMessages = JSON.stringify(messages);
+//   LocalStorage.saveData("messages_" + channelId, jsonMessages);
+// };
 
 export default useGetChannels;

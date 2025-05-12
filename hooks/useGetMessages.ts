@@ -17,13 +17,13 @@ export const useDownloadMessages = async (channelId: string) => {
       let message = getMessage(amityMessage);
       messages.push(message);
 
-      if (message.fileId) {
-        useDownloadFile(message.fileId);
-      }
+      // if (message.fileId) {
+      //   useDownloadFile(message.fileId);
+      // }
     });
 
     saveMessages(messages, channelId);
-    messageCallback(messages);
+    // messageCallback(messages);
   });
 };
 
@@ -32,21 +32,28 @@ const useGetMessages = async (
   callback: UseGetMessagesCallback
 ) => {
   Log.debug("useGetMessages hook called");
-  messageCallback = callback;
-  let messages = getMessages(channelId);
-  if (messages != undefined) {
+  await AmityService.getMessages(channelId, (amityMessages) => {
+    let messages: Message[] = Array<Message>();
+    amityMessages.map((amityMessage) => {
+      let message = getMessage(amityMessage);
+      messages.push(message);
+
+      // if (message.fileId) {
+      //   useDownloadFile(message.fileId);
+      // }
+    });
+
+    saveMessages(messages, channelId);
     callback(messages);
-  } else {
-    useDownloadMessages(channelId);
-  }
+  });
 };
 
-const saveMessages = (messages: Message[], channelId: string) => {
+export const saveMessages = (messages: Message[], channelId: string) => {
   let jsonMessages = JSON.stringify(messages);
   LocalStorage.saveData("messages_" + channelId, jsonMessages);
 };
 
-const getMessages = (channelId: string) => {
+export const getMessages = (channelId: string) => {
   let jsonMessages = LocalStorage.getData("messages_" + channelId);
   if (jsonMessages != undefined) {
     let messages = JSON.parse(jsonMessages) as Message[];

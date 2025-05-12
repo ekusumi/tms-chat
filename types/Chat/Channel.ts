@@ -142,7 +142,7 @@ export const getFilterChannelFromMessage = (
   let initials = getInitials(user!);
   let displayName = getFullName(user!);
 
-  let text = message.data?.text;
+  let text = message.text;
 
   let timestamp = new Date(message.timestamp);
   let routeName = "";
@@ -152,7 +152,7 @@ export const getFilterChannelFromMessage = (
     userId: userId,
     displayName: displayName,
     initials: initials,
-    message: text,
+    message: text!,
     timestamp: timestamp.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",

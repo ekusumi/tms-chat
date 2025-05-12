@@ -8,7 +8,7 @@ export type Message = {
   fileId?: string;
   reactions: any;
   timestamp: string;
-  tag?: string | null;
+  tag?: string | undefined;
   acknowledge: boolean;
   delivered: boolean;
   read: boolean;

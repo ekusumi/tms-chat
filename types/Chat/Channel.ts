@@ -1,3 +1,4 @@
+import { time } from "console";
 import LocalStorage from "../../utils/LocalStorage";
 import { getRouteName } from "../Pimm/ActiveRouteShipment";
 import { getUser, getInitials, getFullName } from "../Pimm/User";
@@ -83,8 +84,23 @@ export const getChannel = (amityChannel: Amity.Channel) => {
     }
   }
 
-  let timestamp = new Date(amityChannel.lastActivity);
+  let lastActivity = new Date(amityChannel.lastActivity);
   let routeName = getRouteName(userId);
+  let timestamp;
+
+  var todaysDate = new Date();
+  if (lastActivity.setHours(0, 0, 0, 0) == todaysDate.setHours(0, 0, 0, 0)) {
+    timestamp = lastActivity.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  } else {
+    timestamp = lastActivity.toLocaleDateString([], {
+      month: "2-digit",
+      day: "2-digit",
+      year: "2-digit",
+    });
+  }
 
   let channel: Channel = {
     channelId: amityChannel.channelId,
@@ -92,10 +108,7 @@ export const getChannel = (amityChannel: Amity.Channel) => {
     displayName: displayName,
     initials: initials,
     message: message,
-    timestamp: timestamp.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    }),
+    timestamp: timestamp,
     unreadCount: amityChannel.subChannelsUnreadCount,
     route: routeName,
     lastActivity: amityChannel.lastActivity,
@@ -142,7 +155,7 @@ export const getFilterChannelFromMessage = (
   let initials = getInitials(user!);
   let displayName = getFullName(user!);
 
-  let text = message.data?.text;
+  let text = message.text;
 
   let timestamp = new Date(message.timestamp);
   let routeName = "";
@@ -152,7 +165,7 @@ export const getFilterChannelFromMessage = (
     userId: userId,
     displayName: displayName,
     initials: initials,
-    message: text,
+    message: text!,
     timestamp: timestamp.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",

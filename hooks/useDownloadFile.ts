@@ -17,7 +17,7 @@ const downloadFile = async (url: string, fileId: string, filename: string) => {
 
   try {
     const result = await downloadResumable.downloadAsync();
-    await LocalStorage.saveData(fileId, result?.uri!);
+    LocalStorage.saveData(fileId, result?.uri!);
   } catch (e) {
     console.error(e);
   }

@@ -50,7 +50,7 @@ const ContactsPage = () => {
       let contacts = sortUsers(users);
       setAllContacts(contacts!);
 
-      await LocalStorage.saveData("contacts", JSON.stringify(contacts));
+      LocalStorage.saveData("contacts", JSON.stringify(contacts));
       setIsLoading(false);
     };
 

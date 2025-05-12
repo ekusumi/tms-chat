@@ -9,20 +9,20 @@ export type PropertyValue = {
   value: string;
 };
 
-export const saveSiteSettings = async (siteSettings: SiteSettings) => {
+export const saveSiteSettings = (siteSettings: SiteSettings) => {
   let json = JSON.stringify(siteSettings);
-  await LocalStorage.saveData("siteSettings", json);
+  LocalStorage.saveData("siteSettings", json);
 
-  let apiKey = await getSiteSetting("Std:TMS:Messaging:Amity:ApplicationKey");
-  let region = await getSiteSetting("Std:TMS:Messaging:Amity:Region");
+  let apiKey = getSiteSetting("Std:TMS:Messaging:Amity:ApplicationKey");
+  let region = getSiteSetting("Std:TMS:Messaging:Amity:Region");
 
-  await LocalStorage.saveData("amityApiKey", apiKey!);
-  await LocalStorage.saveData("amityRegion", region!);
+  LocalStorage.saveData("amityApiKey", apiKey!);
+  LocalStorage.saveData("amityRegion", region!);
 };
 
-export const getSiteSetting = async (siteSetting: string) => {
-  let json = await LocalStorage.getData("siteSettings")!;
-  let siteSettings = JSON.parse(json!) as SiteSettings;
+export const getSiteSetting = (siteSetting: string) => {
+  let json = LocalStorage.getData("siteSettings")!;
+  let siteSettings = JSON.parse(json) as SiteSettings;
   var value: string | null = null;
 
   siteSettings.settings.map((setting) => {

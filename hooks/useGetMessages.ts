@@ -41,9 +41,9 @@ const useGetMessages = async (
   }
 };
 
-const saveMessages = async (messages: Message[], channelId: string) => {
+const saveMessages = (messages: Message[], channelId: string) => {
   let jsonMessages = JSON.stringify(messages);
-  await LocalStorage.saveData("messages_" + channelId, jsonMessages);
+  LocalStorage.saveData("messages_" + channelId, jsonMessages);
 };
 
 const getMessages = (channelId: string) => {

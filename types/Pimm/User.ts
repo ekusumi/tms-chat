@@ -27,10 +27,10 @@ export const getInitials = (user: User) => {
   }
 };
 
-export const saveUser = async (user: User) => {
+export const saveUser = (user: User) => {
   try {
     let json = JSON.stringify(user);
-    await LocalStorage.saveData(user.userId, json);
+    LocalStorage.saveData(user.userId, json);
   } catch (error) {
     console.error("Error: " + error);
   }
@@ -58,12 +58,12 @@ export const getRole = (user: User) => {
   return roleName;
 };
 
-export const saveLoginId = async (userId: string) => {
-  await LocalStorage.saveData("loginId", userId);
+export const saveLoginId = (userId: string) => {
+  LocalStorage.saveData("loginId", userId);
 };
 
-export const saveSiteId = async (siteId: string) => {
-  await LocalStorage.saveData("siteId", siteId);
+export const saveSiteId = (siteId: string) => {
+  LocalStorage.saveData("siteId", siteId);
 };
 
 export default User;

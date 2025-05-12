@@ -101,7 +101,7 @@ const ChannelPage = () => {
   const getActiveRouteShipment = async () => {
     let siteId = LocalStorage.getData("siteId");
     let activeRouteShipments = await useGetActiveRouteShipment(siteId!);
-    await LocalStorage.saveData(
+    LocalStorage.saveData(
       "activeRouteShipments",
       JSON.stringify(activeRouteShipments)
     );

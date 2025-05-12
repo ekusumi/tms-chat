@@ -59,12 +59,9 @@ const useFilterMessage = (
   });
 };
 
-const saveFilterMessages = async (
-  channelId: string,
-  messages: Amity.Message[]
-) => {
+const saveFilterMessages = (channelId: string, messages: Amity.Message[]) => {
   let jsonMessages = JSON.stringify(messages);
-  await LocalStorage.saveData("messages_" + channelId, jsonMessages);
+  LocalStorage.saveData("messages_" + channelId, jsonMessages);
 };
 
 // const getFilterMessages = (channelId: string) => {

@@ -11,7 +11,6 @@ const SearchListItem = ({
   channelId: string;
 }) => {
   const onClick_searchListItem = (channelId: string) => {
-    console.log(`List Item clicked: ${channelId}`);
     router.push(`/channel/${channelId}`);
   };
 

@@ -1,9 +1,6 @@
 import { router } from "expo-router";
 import React from "react";
 import { View, StyleSheet, Pressable, Text, Image } from "react-native";
-import useCreateChannel from "../../hooks/useCreateChannel";
-import { saveChannel } from "../../types/Chat/Channel";
-import LocalStorage from "../../utils/LocalStorage";
 import { getChannelForUserId } from "../../hooks/useGetChannels";
 
 const img_dispatcher = require("../../assets/icon/dispatcher_icon.png");
@@ -22,7 +19,6 @@ const ContactListItem = ({
   role: string;
 }) => {
   const onClick_contactListItem = async (userId: string) => {
-    console.log("List Item clicked: " + userId);
     let channelId = getChannelForUserId(userId);
     router.dismiss();
     router.push(`/channel/${channelId}`);

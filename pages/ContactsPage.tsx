@@ -18,7 +18,6 @@ const ContactsPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onClick_btnBack = () => {
-    console.log("Back button clicked!");
     router.navigate("../");
   };
 
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   tblList: {
-    height: "100%",
+    height: "75%",
   },
 });
 

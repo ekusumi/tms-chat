@@ -134,13 +134,7 @@ const MessageBubble = ({
                     candleHeightScale={7}
                     onPlayerStateChange={(state) => {
                       setPlayerState(state);
-                      console.log(
-                        `STATE: ${JSON.stringify(
-                          state
-                        )} PLAYERSTATE: ${JSON.stringify(playerState)}`
-                      );
                     }}
-                    onPanStateChange={(isMoving) => console.log(isMoving)}
                     containerStyle={styles.waveStyle}
                   />
                 </View>

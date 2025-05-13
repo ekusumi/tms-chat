@@ -31,7 +31,6 @@ const StoreProfilePage = ({ siteId }: { siteId: string }) => {
   }, []);
 
   const onClick_btnBack = () => {
-    console.log("Back button clicked!");
     router.navigate("../");
   };
 

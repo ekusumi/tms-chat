@@ -15,7 +15,6 @@ const key_stop_icon = require("../../assets/icon/key_stop_icon.png");
 const sensitive_icon = require("../../assets/icon/sensitive_icon.png");
 
 const onClick_btnBack = () => {
-  console.log("Back button clicked!");
   router.navigate("../");
 };
 
